@@ -1,0 +1,4 @@
+pytelegrambotapi
+fastapi
+uvicorn
+aiohttp
