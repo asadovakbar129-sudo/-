@@ -1,4 +1,0 @@
-pytelegrambotapi
-fastapi
-uvicorn
-aiohttp
