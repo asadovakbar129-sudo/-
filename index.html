@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Web3 Glass Browser</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #7d5fff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f0c29; /* Глубокий темный фон */
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* Центральный логотип/приветствие */
+        .brand {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .brand h1 { font-size: 24px; font-weight: 300; letter-spacing: 2px; }
+
+        /* "Omnibar" - нижняя панель ввода (стиль Web3) */
+        .bottom-omnibar {
+            position: fixed;
+            bottom: 20px;
+            width: 90%;
+            max-width: 450px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 10px 5px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .go-btn {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="brand">
+        <h1>Glass Browser</h1>
+        <p style="opacity: 0.6; font-size: 14px;">Введите URL или запрос для поиска</p>
+    </div>
+
+    <!-- Нижняя панель (Omnibar) -->
+    <div class="bottom-omnibar">
+        <input type="text" id="urlInput" placeholder="Поиск или адрес..." onkeypress="handleEnter(event)">
+        <button class="go-btn" onclick="navigate()">Go</button>
+    </div>
+
+    <script>
+        function navigate() {
+            let input = document.getElementById('urlInput').value.trim();
+            if (!input) return;
+
+            // Логика: если есть точка и нет пробелов - это URL
+            let isUrl = /^[^\s]+\.[^\s]+$/.test(input) && !input.includes(' ');
+
+            if (isUrl) {
+                if (!input.startsWith('http')) input = 'https://' + input;
+                window.open(input, '_blank');
+            } else {
+                // Иначе - поиск через DuckDuckGo
+                window.open('https://duckduckgo.com/?q=' + encodeURIComponent(input), '_blank');
+            }
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') navigate();
+        }
+    </script>
+</body>
+</html>
